@@ -11,7 +11,7 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}/nseIndia.js"
+            "program": "${workspaceFolder}/app.js"
         }
     ]
 }

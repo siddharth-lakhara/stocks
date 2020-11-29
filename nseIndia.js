@@ -4,7 +4,7 @@ const notifier = require('node-notifier');
 
 puppeteer.use(StealthPlugin());
 
-const mainFn = async () => {
+const getNSEIndiaData = async () => {
     const browser = await puppeteer.launch({headless: false});
     try {
         const page = await browser.newPage();
@@ -39,4 +39,9 @@ const mainFn = async () => {
     }
 };
 
-mainFn();
+module.exports = getNSEIndiaData;
+
+if (require.main === module) {
+    console.log('Fetching data');
+    getNSEIndiaData();
+}
