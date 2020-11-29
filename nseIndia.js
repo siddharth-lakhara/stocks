@@ -14,10 +14,10 @@ const mainFn = async () => {
 
         await page.goto('https://www.nseindia.com/market-data/live-equity-market');
         await page.waitForSelector('#equitieStockSelect');
-        await page.waitFor(5000);
+        await page.waitForTimeout(5000);
 
         await page.select('select#equitieStockSelect', 'Securities in F&O');
-        await page.waitFor(5000);
+        await page.waitForTimeout(5000);
 
         await page.evaluate(() => {
             const elem = document.querySelector(".downloads a");
@@ -25,7 +25,7 @@ const mainFn = async () => {
             return elem;
         })
         
-        await page.waitFor(5000);
+        await page.waitForTimeout(5000);
         console.log('Complete');
 
         notifier.notify({
