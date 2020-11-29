@@ -1,6 +1,5 @@
 const puppeteer = require('puppeteer-extra');
 const StealthPlugin = require('puppeteer-extra-plugin-stealth');
-const notifier = require('node-notifier');
 
 puppeteer.use(StealthPlugin());
 
@@ -27,10 +26,6 @@ const getNSEIndiaData = async () => {
         
         await page.waitForTimeout(5000);
         console.log('Complete');
-
-        notifier.notify({
-            message: 'Latest stock market data downloaded',
-        });
         
         browser.close();
     } catch (e) {
