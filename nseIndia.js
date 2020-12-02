@@ -7,7 +7,7 @@ const getNSEIndiaData = async () => {
     const browser = await puppeteer.launch({headless: false});
     try {
         const page = await browser.newPage();
-        page.setDefaultNavigationTimeout(0);
+        await page.setDefaultNavigationTimeout(0);
         await page.setViewport({width: 1200, height: 720});
         await page.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36');
 
