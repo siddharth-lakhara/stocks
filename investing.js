@@ -13,6 +13,7 @@ const getInvestingData = async () => {
         await page.setDefaultNavigationTimeout(0);
         await page.setViewport({ width: 1200, height: 720 });
         await page.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36');
+        await page._client.send('Page.setDownloadBehavior', { behavior: 'allow', downloadPath: './downloads' });
         await page.setRequestInterception(true);
         page.on('request', (request) => {
             if (request.url().endsWith('.png') || request.url().endsWith('.jpg')) {
@@ -74,6 +75,6 @@ const getInvestingData = async () => {
 module.exports = getInvestingData;
 
 if (require.main === module) {
-    console.log('Fetching data');
+    console.log('Starting data fetch');
     getInvestingData();
 }
