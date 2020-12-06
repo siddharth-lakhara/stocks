@@ -56,6 +56,7 @@ const getInvestingData = async () => {
         await page.goto('https://in.investing.com/portfolio/?portfolioID=YGZmMG8xYT5jNjo%2BNGM%3D');
         
         console.log('INVESTING - Downloading portfolio');
+        await page.waitForTimeout(5000);
         await page.click('.portfolioActionsContainer.float_lang_base_2');
         await page.click('.addRow.js-open-download-portfolio-popup');
         await page.click('#downloadPortfolio .footer .newBtn.Orange2');

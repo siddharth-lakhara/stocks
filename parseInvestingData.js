@@ -24,7 +24,7 @@ const parseData = async (investingDataFileName, NSEDataFileName) => {
     const excelInterface = new Excel.Workbook();
     const investingDataCSV = await excelInterface.csv.readFile(investingDataFileName);
     const NSEDataCSV = await excelInterface.csv.readFile(NSEDataFileName);
-    const mainExcel = await excelInterface.xlsx.readFile('./downloads/InvestingExcel.xlsx');
+    const mainExcel = await excelInterface.xlsx.readFile(process.env.mainExcelPath);
     
     const ws = mainExcel.getWorksheet('Investing Data');
     const nseWs = mainExcel.getWorksheet('NSE India');
@@ -39,7 +39,7 @@ const parseData = async (investingDataFileName, NSEDataFileName) => {
         nseWs.getColumn(idx+1).values = values;
     });
 
-    mainExcel.xlsx.writeFile('./downloads/InvestingExcel.xlsx');
+    mainExcel.xlsx.writeFile(process.env.mainExcelPath);
 }
 
 const filterCSVFiles = (files) => {
@@ -78,7 +78,7 @@ const filterFileName = (files, pattern) => {
 }
 
 const findFiles = async () => {
-    const dirPath = '/Users/slakhara/personal/stocks/downloads';
+    const dirPath = process.env.downloadFolderPath;
     const files = await readdirPromise(dirPath)
         .then(filterCSVFiles)
         .then((files) => (getCreateTime(files, dirPath)))
