@@ -27,7 +27,7 @@ const parseData = async (investingDataFileName, NSEDataFileName) => {
     const mainExcel = await excelInterface.xlsx.readFile(process.env.mainExcelPath);
     
     const ws = mainExcel.getWorksheet('Investing Data');
-    const nseWs = mainExcel.getWorksheet('NSE India');
+    const nseWs = mainExcel.getWorksheet('NSE Data');
     
     investingDataCSV.columns.map((c, idx) => {
         const values = getParsedValues(c.values);
@@ -48,7 +48,7 @@ const filterCSVFiles = (files) => {
             const fileParts = f.split('.');
             const isCSV = fileParts[fileParts.length-1] === 'csv';
             const isInvestingData = (/^Portfolio_Watchlist.*$/).test(fileParts[0]);
-            const isNSEData = (/^MW.*$/).test(fileParts[0]);
+            const isNSEData = (/^MW-SECURITIES-IN-F&O.*$/).test(fileParts[0]);
             const isRequiredFile = isInvestingData || isNSEData;
             return (isCSV && isRequiredFile);
         }
@@ -85,7 +85,7 @@ const findFiles = async () => {
         .then(sortOnTime)
         .then((files) => (files.map((f) => (f.name))))
     const investingDataFileName = path.join(dirPath, filterFileName(files, /^Portfolio_Watchlist.*$/)) ;
-    const NSEDataFileName = path.join(dirPath, filterFileName(files, /^MW.*$/)) ;
+    const NSEDataFileName = path.join(dirPath, filterFileName(files, /^MW-SECURITIES-IN-F&O.*$/)) ;
     return [investingDataFileName, NSEDataFileName];
 };
 
