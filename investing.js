@@ -32,7 +32,6 @@ const getInvestingData = async () => {
         await page.goto('https://in.investing.com/');
         const cookie = await page.cookies();
         const isLoggedIn = cookie.some((c) => (c.name === 'ses_id'));
-        throw new Error('test');
         if (!isLoggedIn) {
             console.log('INVESTING - Logging on to investing.com');
             await page.goto('https://in.investing.com/members-admin/login');
