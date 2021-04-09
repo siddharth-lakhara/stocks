@@ -24,10 +24,12 @@ const parseData = async (NSEDataFileName, NSEIndicesFileName) => {
     const excelInterface = new Excel.Workbook();
     // const investingDataCSV = await excelInterface.csv.readFile(investingDataFileName);
     const NSEDataCSV = await excelInterface.csv.readFile(NSEDataFileName);
+    const NSEIndicesCSV = await excelInterface.csv.readFile(NSEIndicesFileName);
     const mainExcel = await excelInterface.xlsx.readFile(process.env.mainExcelPath);
     
     // const ws = mainExcel.getWorksheet('Investing Data');
     const nseWs = mainExcel.getWorksheet('NSE Data');
+    const nseIndicesWs = mainExcel.getWorksheet('NSE Indices');
     
     // investingDataCSV.columns.map((c, idx) => {
     //     const values = getParsedValues(c.values);
@@ -39,6 +41,11 @@ const parseData = async (NSEDataFileName, NSEIndicesFileName) => {
         nseWs.getColumn(idx+1).values = values;
     });
 
+    NSEIndicesCSV.columns.map((c, idx) => {
+      const values = getParsedValues(c.values);
+      nseIndicesWs.getColumn(idx + 1).values = values;
+    });
+
     mainExcel.xlsx.writeFile(process.env.mainExcelPath);
 }
 
@@ -47,9 +54,10 @@ const filterCSVFiles = (files) => {
         (f) => {
             const fileParts = f.split('.');
             const isCSV = fileParts[fileParts.length-1] === 'csv';
-            const isInvestingData = (/^Portfolio_Watchlist.*$/).test(fileParts[0]);
+            // const isInvestingData = (/^Portfolio_Watchlist.*$/).test(fileParts[0]);
             const isNSEData = (/^MW-SECURITIES-IN-F&O.*$/).test(fileParts[0]);
-            const isRequiredFile = isInvestingData || isNSEData;
+            const isNSEIndicesData = (/^MW-All-Indices.*$/).test(fileParts[0]);
+            const isRequiredFile = isNSEData || isNSEIndicesData;
             return (isCSV && isRequiredFile);
         }
     )
@@ -86,12 +94,13 @@ const findFiles = async () => {
     .then((files) => files.map((f) => f.name));
   // const investingDataFileName = path.join(dirPath, filterFileName(files, /^Portfolio_Watchlist.*$/)) ;
   const NSEDataFileName = path.join(dirPath, filterFileName(files, /^MW-SECURITIES-IN-F&O.*$/));
-  return [NSEDataFileName];
+  const NSEIndicesFileName = path.join(dirPath, filterFileName(files, /^MW-All-Indices.*$/));
+  return [NSEDataFileName, NSEIndicesFileName];
 };;
 
 const main = async () => {
-    const [NSEDataFileName] = await findFiles();
-    parseData(NSEDataFileName);
+    const [NSEDataFileName, NSEIndicesFileName] = await findFiles();
+    parseData(NSEDataFileName, NSEIndicesFileName);
 }
 
 module.exports = main;

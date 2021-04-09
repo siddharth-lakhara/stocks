@@ -23,6 +23,13 @@ const getNSEIndiaData = async () => {
 
         console.log('NSE INDIA - Downloading portfolio')
         await page.click('.downloads a');
+        await page.waitForTimeout(5000);
+        
+        // Download NSE India indices file
+        await page.goto('https://www.nseindia.com/market-data/live-market-indices');
+        await page.waitForTimeout(5000);
+        console.log('NSE INDIA - Downloading Indices file');
+        await page.click('.downloads a');
         
         await page.waitForTimeout(15000);
         
