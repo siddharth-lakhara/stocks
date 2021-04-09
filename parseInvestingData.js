@@ -20,19 +20,19 @@ const getParsedValues = (unparsedValues) => {
     return parsedValues;
 }
 
-const parseData = async (investingDataFileName, NSEDataFileName) => {
+const parseData = async (NSEDataFileName, NSEIndicesFileName) => {
     const excelInterface = new Excel.Workbook();
-    const investingDataCSV = await excelInterface.csv.readFile(investingDataFileName);
+    // const investingDataCSV = await excelInterface.csv.readFile(investingDataFileName);
     const NSEDataCSV = await excelInterface.csv.readFile(NSEDataFileName);
     const mainExcel = await excelInterface.xlsx.readFile(process.env.mainExcelPath);
     
-    const ws = mainExcel.getWorksheet('Investing Data');
+    // const ws = mainExcel.getWorksheet('Investing Data');
     const nseWs = mainExcel.getWorksheet('NSE Data');
     
-    investingDataCSV.columns.map((c, idx) => {
-        const values = getParsedValues(c.values);
-        ws.getColumn(idx+1).values = values;
-    });
+    // investingDataCSV.columns.map((c, idx) => {
+    //     const values = getParsedValues(c.values);
+    //     ws.getColumn(idx+1).values = values;
+    // });
     
     NSEDataCSV.columns.map((c, idx) => {
         const values = getParsedValues(c.values);
@@ -78,20 +78,20 @@ const filterFileName = (files, pattern) => {
 }
 
 const findFiles = async () => {
-    const dirPath = process.env.downloadFolderPath;
-    const files = await readdirPromise(dirPath)
-        .then(filterCSVFiles)
-        .then((files) => (getCreateTime(files, dirPath)))
-        .then(sortOnTime)
-        .then((files) => (files.map((f) => (f.name))))
-    const investingDataFileName = path.join(dirPath, filterFileName(files, /^Portfolio_Watchlist.*$/)) ;
-    const NSEDataFileName = path.join(dirPath, filterFileName(files, /^MW-SECURITIES-IN-F&O.*$/)) ;
-    return [investingDataFileName, NSEDataFileName];
-};
+  const dirPath = process.env.downloadFolderPath;
+  const files = await readdirPromise(dirPath)
+    .then(filterCSVFiles)
+    .then((files) => getCreateTime(files, dirPath))
+    .then(sortOnTime)
+    .then((files) => files.map((f) => f.name));
+  // const investingDataFileName = path.join(dirPath, filterFileName(files, /^Portfolio_Watchlist.*$/)) ;
+  const NSEDataFileName = path.join(dirPath, filterFileName(files, /^MW-SECURITIES-IN-F&O.*$/));
+  return [NSEDataFileName];
+};;
 
 const main = async () => {
-    const [investingDataFileName, NSEDataFileName] = await findFiles();
-    parseData(investingDataFileName, NSEDataFileName)
+    const [NSEDataFileName] = await findFiles();
+    parseData(NSEDataFileName);
 }
 
 module.exports = main;
