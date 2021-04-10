@@ -5,10 +5,13 @@ $a = New-Object -comobject Excel.Application
 $a.Visible = $True  
   
 # keep this variable in sync with env variables
-$FilePath = '/Users/slakhara/Downloads/InvestingExcel.xlsx'
+$FilePath = 'C:\\Users\\PUKHRAJ LAKHARA\\Downloads\\InvestingExcel.xlsx'
 
 # open  workbook 
 $b = $a.Workbooks.Open($FilePath)
 
 # close the workbook, saving changes
 $b.Close($true)
+$a.Quit()
+[System.Runtime.Interopservices.Marshal]::ReleaseComObject($a)
+Remove-Variable a
