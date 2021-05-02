@@ -18,8 +18,8 @@ cron.schedule('*/15 * * * *', async () => {
     await getNSEIndiaData();
     console.log(currentTime(), 'Copying data to excel');
     await parseInvestingData();
-    console.log(currentTime(), 'Open/Close file');
-    updateMacro();
+    // console.log(currentTime(), 'Open/Close file');
+    // updateMacro();
     console.log('\n');
 // };
 });
