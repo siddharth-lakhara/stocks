@@ -6,7 +6,7 @@ const blockedResources = require('./blockedResources');
 puppeteer.use(StealthPlugin());
 
 const getNSEIndiaData = async () => {
-    const browser = await puppeteer.launch({ headless: false });
+    const browser = await puppeteer.launch({ headless: false, userDataDir: './data' });
 
     try {
         const page = await browser.newPage();

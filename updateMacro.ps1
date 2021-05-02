@@ -1,17 +1,32 @@
+Read-Host -Prompt "Press any key to start"
+
 # create an instance of excel
-$a = New-Object -comobject Excel.Application
+$excel = New-Object -comobject Excel.Application
 
 # make it visible
-$a.Visible = $True  
+$excel.Visible = $True  
   
 # keep this variable in sync with env variables
-$FilePath = 'C:\\Users\\PUKHRAJ LAKHARA\\Downloads\\InvestingExcel.xlsx'
+$FilePath = 'C:\\Users\\PUKHRAJ LAKHARA\\Downloads\\Dummy.xlsm'
 
 # open  workbook 
-$b = $a.Workbooks.Open($FilePath)
+$workbook = $excel.Workbooks.Open($FilePath)
+
+# Run macro
+$app = $excel.Application
+$app.Run("macro_timer")
+
+Read-Host -Prompt "Press any key to continue"
 
 # close the workbook, saving changes
-$b.Close($true)
-$a.Quit()
-[System.Runtime.Interopservices.Marshal]::ReleaseComObject($a)
-Remove-Variable a
+$workbook.Close($true)
+$excel.Quit()
+[System.Runtime.Interopservices.Marshal]::ReleaseComObject($Workbook)
+[System.Runtime.Interopservices.Marshal]::ReleaseComObject($excel)
+Remove-Variable excel
+[System.GC]::Collect()
+
+
+Read-Host -Prompt "Press any key to exit"
+
+exit

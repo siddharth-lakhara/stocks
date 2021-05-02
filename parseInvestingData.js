@@ -46,7 +46,7 @@ const parseData = async (NSEDataFileName, NSEIndicesFileName) => {
       nseIndicesWs.getColumn(idx + 1).values = values;
     });
 
-    mainExcel.xlsx.writeFile(process.env.mainExcelPath);
+    await mainExcel.xlsx.writeFile(process.env.mainExcelPath);
 }
 
 const filterCSVFiles = (files) => {
@@ -100,7 +100,7 @@ const findFiles = async () => {
 
 const main = async () => {
     const [NSEDataFileName, NSEIndicesFileName] = await findFiles();
-    parseData(NSEDataFileName, NSEIndicesFileName);
+    await parseData(NSEDataFileName, NSEIndicesFileName);    
 }
 
 module.exports = main;
